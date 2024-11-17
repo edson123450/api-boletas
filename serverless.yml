@@ -1,0 +1,29 @@
+org: edsonguardamino
+service: api-boletas
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  iam:
+    role: arn:aws:iam::051476014162:role/LabRole
+
+functions:
+  search:
+    handler: ObtenerBoletaEstudiante.lambda_handler
+    events:
+      - http:
+          path: /boletas/search
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
