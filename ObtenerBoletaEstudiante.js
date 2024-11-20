@@ -4,7 +4,50 @@ const AWS = require('aws-sdk');
 // Configurar DynamoDB
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
+const lambdaClient = new AWS.Lambda();
+
 exports.lambda_handler = async (event) => {
+
+    // Obtener el token del encabezado
+    const token = event.headers?.Authorization;
+    if (!token) {
+        return {
+            statusCode: 401,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: 'error',
+                message: 'Token no proporcionado. Acceso no autorizado.',
+            }, null, 2),
+        };
+    }
+
+    // Invocar el Lambda para validar el token
+    const payload = { token };
+    const invokeParams = {
+        FunctionName: 'ValidarTokenEstudiante', // Nombre del Lambda de validación
+        InvocationType: 'RequestResponse',
+        Payload: JSON.stringify(payload),
+    };
+
+    const invokeResponse = await lambdaClient.invoke(invokeParams).promise();
+    const validationResponse = JSON.parse(invokeResponse.Payload);
+
+    if (validationResponse.statusCode === 403) {
+        return {
+            statusCode: 403,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: 'error',
+                message: 'Acceso no autorizado. Token inválido.',
+            }, null, 2),
+        };
+    }
+
+    
     // Obtener valores del cuerpo de la solicitud
     let tenantId, c_estudiante_c_programa;
     if (typeof event.body === 'string') {
