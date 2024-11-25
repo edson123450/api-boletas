@@ -27,3 +27,21 @@ functions:
                   },
                   "body": $input.json('$')
                 }
+
+resources:
+  Resources:
+    TablaBoletas:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: tabla_boletas
+        AttributeDefinitions:
+          - AttributeName: tenant_id
+            AttributeType: S
+          - AttributeName: c_estudiante#c_programa
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenant_id
+            KeyType: HASH
+          - AttributeName: c_estudiante#c_programa
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
