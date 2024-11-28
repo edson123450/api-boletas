@@ -27,6 +27,25 @@ functions:
                   },
                   "body": $input.json('$')
                 }
+  crear:
+    handler: CrearBoletaEstudiante.lambda_handler
+    events:
+      - http:
+          path: /boletas/crear
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
 
 resources:
   Resources:
