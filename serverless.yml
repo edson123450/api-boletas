@@ -5,7 +5,7 @@ provider:
   name: aws
   runtime: nodejs18.x
   iam:
-    role: arn:aws:iam::051476014162:role/LabRole
+    role: arn:aws:iam::547527107767:role/LabRole
 
 functions:
   search:
@@ -64,3 +64,5 @@ resources:
           - AttributeName: c_estudiante#c_programa
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
