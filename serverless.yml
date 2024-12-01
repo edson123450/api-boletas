@@ -1,11 +1,11 @@
-org: edsonguardamino
+org: fabianorivadeneira
 service: api-boletas
 
 provider:
   name: aws
   runtime: nodejs18.x
   iam:
-    role: arn:aws:iam::547527107767:role/LabRole
+    role: arn:aws:iam::273463316483:role/LabRole
 
 functions:
   search:
