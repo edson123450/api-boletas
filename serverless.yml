@@ -5,7 +5,7 @@ provider:
   name: aws
   runtime: nodejs18.x
   iam:
-    role: arn:aws:iam::273463316483:role/LabRole
+    role: arn:aws:iam::851725630330:role/LabRole
 
 functions:
   search:
